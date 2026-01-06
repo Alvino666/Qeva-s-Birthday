@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Gift For Qevaa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --base-pink: #ff69b4;
+            --cream-pastel: #fffaf0;
+            --soft-pink: #ffb7c5;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--cream-pastel);
+            color: #4a4a4a;
+            overflow: hidden;
+            margin: 0;
+        }
+        .font-modern-bold {
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+        }
+        .font-romance {
+            font-family: 'Dancing+Script', cursive;
+        }
+        .page {
+            display: none;
+            height: 100dvh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            background: linear-gradient(135deg, var(--cream-pastel) 0%, #ffe4e1 100%);
+        }
+        .active {
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Elemen Dekorasi Melayang */
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.4;
+            animation: floatBalloon 6s ease-in-out infinite;
+        }
+        @keyframes floatBalloon {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-35px) rotate(8deg); }
+        }
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--base-pink);
+            opacity: 0.5;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Numpad Styles */
+        .numpad-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid #ffeff5;
+            color: var(--base-pink);
+        }
+        .numpad-btn:active {
+            background: var(--base-pink);
+            color: white;
+            transform: scale(0.85);
+        }
+        .pin-dot {
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--base-pink);
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .pin-dot.filled {
+            background: var(--base-pink);
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+        }
+
+        /* Desain Amplop Interaktif */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #fff;
+            margin: 60px auto;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.15);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+        }
+        .envelope-wrapper .envelope {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--soft-pink);
+            z-index: 2;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .envelope-wrapper .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 0; height: 0;
+            border-style: solid;
+            border-width: 100px 150px 0 150px;
+            border-color: var(--base-pink) transparent transparent transparent;
+            transform-origin: top;
+            transition: 0.6s transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 4;
+        }
+        .envelope-wrapper .envelope::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 0; height: 0;
+            border-style: solid;
+            border-width: 0 150px 110px 150px;
+            border-color: transparent transparent var(--soft-pink) transparent;
+            z-index: 3;
+            filter: drop-shadow(0 -5px 5px rgba(0,0,0,0.03));
+        }
+
+        .letter {
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            background: white;
+            z-index: 1;
+            transition: 0.8s transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), 0.5s z-index 0.5s;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 8px;
+        }
+
+        .envelope-wrapper.open .envelope::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+        .envelope-wrapper.open .letter {
+            transform: translateY(-160px) scale(1.05);
+            z-index: 5;
+            height: 420px;
+        }
+        .envelope-wrapper.open {
+            margin-top: 180px;
+            transform: translateY(20px);
+        }
+
+        .heart-seal {
+            position: absolute;
+            top: 85px;
+            left: 135px;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: 0.3s opacity;
+        }
+        .envelope-wrapper.open .heart-seal {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 2px solid white;
+        }
+
+        .floating-icon {
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: none; 
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
+            cursor: pointer;
+            border: 2px solid var(--base-pink);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ffb7c5;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="decorations-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Elemen Musik: Lottery.mp4 -->
+    <video id="bgMusic" loop style="display: none;">
+        <source src="Lottery.mp4" type="video/mp4">
+    </video>
+
+    <!-- Tombol Kontrol Musik -->
+    <div id="musicBtn" class="music-control" onclick="toggleMusic()">
+        <i data-lucide="volume-2" id="musicIcon" class="text-[#ff69b4] w-5 h-5"></i>
+    </div>
+
+    <!-- PAGE 0: WELCOME SCREEN -->
+    <section id="page-welcome" class="page active items-center justify-center px-10 text-center">
+        <div class="z-10 w-full max-w-lg">
+            <h1 class="text-6xl md:text-8xl font-black text-[#ff69b4] leading-[0.9] tracking-tighter mb-6 animate-pulse uppercase">
+                HAPPY<br>21ST<br>BIRTHDAY<br>Qevaa!
+            </h1>
+            <p class="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px] mb-14">
+                A special gift for a special person
+            </p>
+            <button onclick="startApp()" class="bg-black text-white px-14 py-6 rounded-full font-black text-sm tracking-widest shadow-2xl transition-all hover:bg-[#ff69b4] hover:scale-105 active:scale-90">
+                CLICK TO OPEN
+            </button>
+        </div>
+        <div class="absolute bottom-10 animate-bounce opacity-30">
+            <i data-lucide="chevron-down" class="text-pink-400"></i>
+        </div>
+    </section>
+
+    <!-- PAGE 1: PASSCODE -->
+    <section id="page-pin" class="page items-center justify-center px-6">
+        <div class="text-center mb-10 z-10">
+            <div class="w-16 h-16 bg-white rounded-[24px] shadow-xl flex items-center justify-center mx-auto mb-6 border-2 border-pink-50">
+                <i data-lucide="lock-keyhole" class="text-[#ff69b4] w-7 h-7"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-[#ff69b4] tracking-tight">Masukin Passcode</h1>
+            <p class="text-xs text-gray-400 mt-2 font-semibold">Clue: Your Special Day</p>
+        </div>
+
+        <div class="flex gap-5 mb-16 z-10">
+            <div id="dot-0" class="pin-dot"></div>
+            <div id="dot-1" class="pin-dot"></div>
+            <div id="dot-2" class="pin-dot"></div>
+            <div id="dot-3" class="pin-dot"></div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-x-8 gap-y-6 z-10">
+            <button onclick="pressPin(1)" class="numpad-btn">1</button>
+            <button onclick="pressPin(2)" class="numpad-btn">2</button>
+            <button onclick="pressPin(3)" class="numpad-btn">3</button>
+            <button onclick="pressPin(4)" class="numpad-btn">4</button>
+            <button onclick="pressPin(5)" class="numpad-btn">5</button>
+            <button onclick="pressPin(6)" class="numpad-btn">6</button>
+            <button onclick="pressPin(7)" class="numpad-btn">7</button>
+            <button onclick="pressPin(8)" class="numpad-btn">8</button>
+            <button onclick="pressPin(9)" class="numpad-btn">9</button>
+            <div></div>
+            <button onclick="pressPin(0)" class="numpad-btn">0</button>
+            <button onclick="clearPin()" class="flex items-center justify-center text-[10px] font-black text-gray-400 tracking-widest">CLEAR</button>
+        </div>
+    </section>
+
+    <!-- PAGE 2: SELECTION PAGE -->
+    <section id="page-menu" class="page items-center justify-center px-6">
+        <div class="z-10 w-full max-w-sm">
+            <!-- Main Photo Card: image_0b8f17.jpg -->
+            <div class="bg-white p-3 rounded-[40px] shadow-2xl mb-12 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                <div class="aspect-[4/5] rounded-[30px] overflow-hidden relative group">
+                    <img src="image_0b8f17.jpg" alt="Birthday Girl Collage" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8">
+                        <h2 class="text-white text-3xl font-black leading-none tracking-tighter uppercase mb-1">
+                            For My<br>Birthday Girl
+                        </h2>
+                        <p class="text-pink-300 font-romance text-xl">Special Day for Qevaa</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-8">
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Pilih kejutanmu di bawah ini</p>
+            </div>
+
+            <div class="flex gap-4 justify-center">
+                <button onclick="nextPage('surat')" class="bg-white px-7 py-5 rounded-[24px] flex flex-col items-center gap-2 shadow-lg active:scale-90 transition-all border-b-4 border-pink-100">
+                    <i data-lucide="mail-open" class="text-[#ff69b4] w-6 h-6"></i>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-gray-500">Birthday Letter</span>
+                </button>
+                <button onclick="nextPage('gallery')" class="bg-white px-7 py-5 rounded-[24px] flex flex-col items-center gap-2 shadow-lg active:scale-90 transition-all border-b-4 border-yellow-100">
+                    <i data-lucide="aperture" class="text-yellow-500 w-6 h-6"></i>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-gray-500">Gallery Foto</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 3: GALLERY -->
+    <section id="page-gallery" class="page p-6">
+        <div class="max-w-md mx-auto w-full pt-10 pb-20 z-10">
+            <div class="flex items-center justify-between mb-10">
+                <button onclick="nextPage('menu')" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md border border-pink-50">
+                    <i data-lucide="arrow-left" class="text-pink-400 w-5 h-5"></i>
+                </button>
+                <h2 class="text-2xl font-black text-[#ff69b4] tracking-tighter">GALLERY</h2>
+                <div class="w-10 flex items-center justify-center">
+                    <i data-lucide="cake" class="text-pink-300 w-6 h-6 floating-icon"></i>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3 mb-12 relative">
+                <div class="aspect-square rounded-[24px] overflow-hidden glass-card p-1.5"><img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=400" class="w-full h-full object-cover rounded-[18px]"></div>
+                <div class="aspect-square rounded-[24px] overflow-hidden glass-card p-1.5"><img src="https://images.unsplash.com/photo-1530103043960-ef38714abb15?w=400" class="w-full h-full object-cover rounded-[18px]"></div>
+                <div class="aspect-square rounded-[24px] overflow-hidden glass-card p-1.5"><img src="https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=400" class="w-full h-full object-cover rounded-[18px]"></div>
+                <div class="aspect-square rounded-[24px] overflow-hidden glass-card p-1.5"><img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400" class="w-full h-full object-cover rounded-[18px]"></div>
+                <div class="aspect-square rounded-[24px] overflow-hidden glass-card p-1.5"><img src="https://images.unsplash.com/photo-1533227268428-f9ed0900fb3b?w=400" class="w-full h-full object-cover rounded-[18px]"></div>
+                <div class="aspect-square rounded-[24px] overflow-hidden glass-card p-1.5"><img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400" class="w-full h-full object-cover rounded-[18px]"></div>
+            </div>
+
+            <div class="glass-card p-8 rounded-[35px] text-center shadow-xl relative overflow-hidden">
+                <p class="italic text-gray-500 text-sm leading-relaxed font-medium">
+                    "Setiap foto menyimpan cerita, setiap momen menyimpan tawa. Terima kasih sudah mengizinkanku menjadi bagian dari perjalanan luar biasamu sampai di usia 21 dan seterusnya."
+                </p>
+                <div class="mt-6 flex justify-center gap-4">
+                    <i data-lucide="gift" class="w-4 h-4 text-pink-300"></i>
+                    <i data-lucide="cake-slice" class="w-4 h-4 text-pink-300"></i>
+                    <i data-lucide="party-popper" class="w-4 h-4 text-pink-300"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 4: BIRTHDAY LETTER -->
+    <section id="page-surat" class="page items-center justify-start pt-16 p-8">
+        <div class="w-full flex justify-start z-20 mb-8">
+            <button onclick="nextPage('menu')" class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm text-gray-400 font-black text-[9px] uppercase tracking-widest active:scale-90 transition-transform">
+                <i data-lucide="arrow-left" class="w-3 h-3 text-pink-400"></i> Back to Menu
+            </button>
+        </div>
+
+        <div class="text-center mb-10 z-10">
+            <h2 class="text-3xl font-black text-[#ff69b4] tracking-tighter uppercase">Birthday Letter</h2>
+            <p class="text-gray-400 text-[10px] mt-2 font-bold uppercase tracking-[0.2em]">Pencet segel hatinya buat buka ya!</p>
+        </div>
+
+        <div class="envelope-wrapper z-10" id="envelope" onclick="toggleEnvelope()">
+            <div class="heart-seal">
+                <i data-lucide="heart" class="w-4 h-4 text-pink-500 fill-current"></i>
+            </div>
+            <div class="envelope"></div>
+            <div class="letter text-center">
+                <!-- Special Photo inside letter: qeba.jpeg -->
+                <div class="w-32 h-32 mb-4 rounded-[20px] overflow-hidden border-4 border-[#ffeff5] shadow-lg transform -rotate-1 shrink-0">
+                    <img src="qeba.jpeg" alt="Qevaa Portrait" class="w-full h-full object-cover rounded-[16px]">
+                </div>
+                <h3 class="text-xl font-bold text-[#ff69b4] mb-3 leading-tight">Happy 21st Birthday, sayang!</h3>
+                <div class="w-10 h-0.5 bg-pink-100 mx-auto mb-4 rounded-full"></div>
+                <div class="overflow-y-auto max-h-[180px] px-2 custom-scrollbar text-left">
+                    <p class="text-[11px] leading-relaxed text-gray-600 font-medium">
+                        Selamat ulang tahun sayangg, ga nyangka kamu udah makin tua ajaa HAHAHA, semoga di umur kamu ke 21 dan seterusnya ini kamu bisa dapet apa yang selalu kamu mau dan bisa jadi qevaa yang lebih baik lagi tahun ke tahun. Makasii sayang udah exist jadi Qeva yang kayak sekarang, semoga kamu makin semangat jalanin kegiatan kamu dan kita kedepan depannya. HAPPIEST BIRTHDAY SAYANGG, LOVE YOU SO MUCH
+                    </p>
+                    <p class="text-[11px] mt-4 font-bold text-gray-800 text-center">
+                        -Your Lovely Boyfriend, Vino
+                    </p>
+                </div>
+                <div class="mt-4 flex justify-center gap-1.5 shrink-0">
+                    <i data-lucide="heart" class="w-3 h-3 text-pink-400 fill-current animate-pulse"></i>
+                    <i data-lucide="heart" class="w-3 h-3 text-pink-400 fill-current"></i>
+                    <i data-lucide="heart" class="w-3 h-3 text-pink-400 fill-current animate-pulse"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-auto pb-10 z-10 text-[9px] text-gray-300 font-black uppercase tracking-[0.4em] animate-pulse text-center">
+            Always by your side
+        </div>
+    </section>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-6 backdrop-blur-lg">
+        <div class="bg-white p-10 rounded-[45px] text-center max-w-xs w-full shadow-2xl border-4 border-red-50">
+            <h3 class="text-xl font-black text-gray-800 mb-2">WRONG PIN!</h3>
+            <p class="text-[11px] text-gray-400 mb-8 font-bold uppercase tracking-wider leading-relaxed">Duh, kayaknya kamu lupa hari spesial kita ya?</p>
+            <button onclick="closeError()" class="bg-black text-white h-14 rounded-2xl w-full font-black text-xs tracking-[0.2em] active:scale-95 transition-transform shadow-xl">TRY AGAIN</button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Passcode: 1201
+        const CORRECT_PIN = "1201"; 
+        let currentInput = "";
+        const audio = document.getElementById("bgMusic");
+
+        // Fungsi Dekorasi (Balon & Confetti)
+        function createDecorations() {
+            const container = document.getElementById('decorations-container');
+            const colors = ['#ff69b4', '#ffb7c5', '#fffaf0', '#ffd700'];
+            for(let i=0; i<15; i++) {
+                const b = document.createElement('div');
+                b.className = 'balloon';
+                b.style.left = Math.random() * 100 + 'vw';
+                b.style.top = Math.random() * 100 + 'vh';
+                b.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                b.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(b);
+            }
+            for(let i=0; i<50; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.top = '-' + (Math.random() * 20) + 'vh';
+                c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                c.style.animationDelay = (Math.random() * 4) + 's';
+                c.style.width = (Math.random() * 8 + 4) + 'px';
+                c.style.height = c.style.width;
+                container.appendChild(c);
+            }
+        }
+        createDecorations();
+
+        // Musik & App Start
+        function startApp() {
+            audio.play().catch(e => console.log("Audio play blocked by browser policy"));
+            document.getElementById("musicBtn").style.display = "flex";
+            nextPage('pin');
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById("musicIcon");
+            if (audio.paused) {
+                audio.play();
+                icon.setAttribute("data-lucide", "volume-2");
+            } else {
+                audio.pause();
+                icon.setAttribute("data-lucide", "volume-x");
+            }
+            lucide.createIcons();
+        }
+
+        // PIN Logic
+        function pressPin(num) {
+            if (currentInput.length < 4) {
+                currentInput += num;
+                updateDots();
+                if (currentInput.length === 4) setTimeout(checkPin, 400);
+            }
+        }
+
+        function updateDots() {
+            for (let i = 0; i < 4; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (dot) {
+                    if (i < currentInput.length) dot.classList.add('filled');
+                    else dot.classList.remove('filled');
+                }
+            }
+        }
+
+        function clearPin() { currentInput = ""; updateDots(); }
+
+        function checkPin() {
+            if (currentInput === CORRECT_PIN) nextPage('menu');
+            else { document.getElementById('error-modal').style.display = 'flex'; clearPin(); }
+        }
+
+        function closeError() { document.getElementById('error-modal').style.display = 'none'; }
+
+        // Navigation
+        function nextPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.remove('active'));
+            setTimeout(() => {
+                const target = document.getElementById('page-' + pageId);
+                if (target) {
+                    target.classList.add('active');
+                    target.scrollTop = 0;
+                }
+            }, 50);
+        }
+
+        function toggleEnvelope() {
+            document.getElementById('envelope').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
